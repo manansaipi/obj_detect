@@ -25,7 +25,19 @@ class ScanController extends GetxController {
   late CameraController cameraController;
   late List<CameraDescription> cameras;
   var detectedObject = "".obs;
-
+  List<Map<String, dynamic>> detectionResult = [
+    {
+      "box": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+      ],
+      "tag": ""
+      // "polygons": List<Map<String, double>>: [{x:coordx, y:coordy}]
+    }
+  ];
   var cameraCount = 0;
 
   var isCameraInitialized = false.obs;
@@ -93,7 +105,6 @@ class ScanController extends GetxController {
     //     );
 
     // print("HEYOO IM HERE $detector");
-    print("HEYOO IM HERE");
 
     // run on videostream
 
@@ -113,7 +124,8 @@ class ScanController extends GetxController {
     //     );
     // print("RESULTTTTTTTTTTTTTTTT:");
     // print(result);
-
+    //example result
+    // [{box: [0.0, 763.1640625, 357.9225158691406, 1116.581787109375, 0.5627957582473755], tag: Stop}]
     // flutter vision
     var result = await vision.yoloOnFrame(
       bytesList: image.planes.map((plane) => plane.bytes).toList(),
@@ -123,14 +135,29 @@ class ScanController extends GetxController {
       confThreshold: 0.4,
       classThreshold: 0.5,
     );
-    if (result != null) {
+    if (result.isNotEmpty) {
       print("RESULTTTTTTTTTTTTTTTT:");
       print(result);
-    }
 
+      detectionResult = result;
+    } else {
+      detectionResult = [
+        {
+          "box": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+          ],
+          "tag": "No Object"
+        }
+      ];
+    }
     // if (detector != null && detector.isNotEmpty) {
     //   var firstDetectedObject = detector.first;
     //   var detectedString =
+
     //       '${firstDetectedObject['detectedClass']} - Confidence: ${firstDetectedObject['confidence']}';
     //   detectedObject.value = detectedString;
     //   print("Result is $detectedString");
