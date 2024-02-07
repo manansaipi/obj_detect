@@ -80,12 +80,12 @@ class ScanController extends GetxController {
 
     //flutter vision
     await vision.loadYoloModel(
-      modelPath: 'assets/model/mymodel.tflite',
+      modelPath: 'assets/model/best_yv8n1200.tflite',
       labels: 'assets/model/mylabels.txt',
       modelVersion: "yolov8",
       quantization: true,
       numThreads: 1,
-      useGpu: true,
+      useGpu: false,
     );
     print("MODEL LOAD SUCCESSFULLY");
   }
@@ -150,7 +150,7 @@ class ScanController extends GetxController {
             0.0,
             0.0,
           ],
-          "tag": "No Object"
+          "tag": "No Object "
         }
       ];
     }

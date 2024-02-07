@@ -65,14 +65,20 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/model/mymodel.tflite
+    # - assets/model/mymodel.tflite
     - assets/model/mylabels.txt
-    - assets/model/tiny_yolo.tflite
-    - assets/images/zidane.jpg
-    - assets/model/bestmodel.tflite
-    - assets/model/best2_float16.tflite
-    - assets/model/yolov8l_float32.tflite
-    - assets/model/yolov8l_float16.tflite
+    # - assets/model/default_label.txt
+    # - assets/model/tiny_yolo.tflite
+    # - assets/images/zidane.jpg
+    # - assets/model/bestmodel.tflite
+    # - assets/model/best2_float16.tflite
+    # - assets/model/yolov8n_float32.tflite
+    # - assets/model/yolov8l_float32.tflite
+    # - assets/model/yolov8l_float16.tflite
+    # - assets/model/my_yv8s.tflite
+    # - assets/model/my_best_yv8s.tflite
+    # - assets/model/my_7yv8s.tflite
+    - assets/model/best_yv8n1200.tflite
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
