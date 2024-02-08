@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
-import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class ScanController extends GetxController {
   @override
@@ -42,6 +42,15 @@ class ScanController extends GetxController {
 
   var isCameraInitialized = false.obs;
 
+  final FlutterTts flutterTts = FlutterTts();
+
+  Future<void> speak(String text) async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(1);
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.speak(text);
+  }
+
   initCamera() async {
     if (await Permission.camera.request().isGranted) {
       cameras = await availableCameras();
@@ -68,22 +77,12 @@ class ScanController extends GetxController {
   initTFLite() async {
     print("LOAD THE MODEL !");
 
-    // await Tflite.loadModel(
-    //     model: "assets/model/yolov8l_float16.tflite",
-    //     labels: "assets/model/mylabels.txt",
-    //     numThreads: 1, // defaults to 1
-    //     isAsset:
-    //         true, // defaults to true, set to false to load resources outside assets
-    //     useGpuDelegate:
-    //         false // defaults to false, set to true to use GPU delegate
-    //     );
-
     //flutter vision
     await vision.loadYoloModel(
-      modelPath: 'assets/model/best_yv8n1200.tflite',
+      modelPath: 'assets/model/my_7yv8s.tflite',
       labels: 'assets/model/mylabels.txt',
       modelVersion: "yolov8",
-      quantization: true,
+      quantization: false,
       numThreads: 1,
       useGpu: false,
     );
@@ -91,41 +90,6 @@ class ScanController extends GetxController {
   }
 
   objectDetector(CameraImage image) async {
-    // run on an image
-    // var detector = await Tflite.detectObjectOnImage(
-    //     path: "assets/images/zidane.jpg", // required
-    //     model: "YOLO",
-    //     imageMean: 0.0,
-    //     imageStd: 255.0,
-    //     threshold: 0.3, // defaults to 0.1
-    //     numResultsPerClass: 2, // defaults to 5
-    //     blockSize: 32, // defaults to 32
-    //     numBoxesPerBlock: 5, // defaults to 5
-    //     asynch: true // defaults to true
-    //     );
-
-    // print("HEYOO IM HERE $detector");
-
-    // run on videostream
-
-//fkutter_tflite
-    // var result = await Tflite.runModelOnFrame(
-    //     bytesList: image.planes.map((plane) {
-    //       return plane.bytes;
-    //     }).toList(), // required
-    //     imageHeight: image.height,
-    //     imageWidth: image.width,
-    //     imageMean: 127.5, // defaults to 127.5
-    //     imageStd: 127.5, // defaults to 127.5
-    //     rotation: 90, // defaults to 90, Android only
-    //     numResults: 2, // defaults to 5
-    //     threshold: 0.1, // defaults to 0.1
-    //     asynch: true // defaults to true
-    //     );
-    // print("RESULTTTTTTTTTTTTTTTT:");
-    // print(result);
-    //example result
-    // [{box: [0.0, 763.1640625, 357.9225158691406, 1116.581787109375, 0.5627957582473755], tag: Stop}]
     // flutter vision
     var result = await vision.yoloOnFrame(
       bytesList: image.planes.map((plane) => plane.bytes).toList(),
@@ -140,30 +104,11 @@ class ScanController extends GetxController {
       print(result);
 
       detectionResult = result;
-    } else {
-      detectionResult = [
-        {
-          "box": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-          ],
-          "tag": "No Object "
-        }
-      ];
-    }
-    // if (detector != null && detector.isNotEmpty) {
-    //   var firstDetectedObject = detector.first;
-    //   var detectedString =
+      print(result);
+      //example result
+      // [{box: [0.0, 763.1640625, 357.9225158691406, 1116.581787109375, 0.5627957582473755], tag: Stop}]
 
-    //       '${firstDetectedObject['detectedClass']} - Confidence: ${firstDetectedObject['confidence']}';
-    //   detectedObject.value = detectedString;
-    //   print("Result is $detectedString");
-    // } else {
-    //   detectedObject.value = 'No object detected';
-    //   print("No object detected");
-    // }
+      speak(detectionResult[0]['tag']);
+    }
   }
 }

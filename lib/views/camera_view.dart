@@ -19,10 +19,12 @@ class CameraView extends StatelessWidget {
                     CameraPreview(controller.cameraController),
                     CustomPaint(
                       // Use CustomPaint to draw the bounding box
-                      painter: BoundingBoxPainter(controller.detectionResult),
+                      painter: BoundingBoxPainter(
+                          controller.detectionResult, context),
                     ),
                     DetectedObjectWidget(controller
                         .detectionResult), // Display detected object info
+                    Text("data"),
                   ],
                 )
               : const Center(child: CircularProgressIndicator());
@@ -33,6 +35,8 @@ class CameraView extends StatelessWidget {
 
   //
 }
+
+
 
 // WIDGET FIR BUILD OBJECT
 // Widget _buildDetectedObject(List<Map<String, dynamic>> detectionResult) {

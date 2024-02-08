@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class BoundingBoxPainter extends CustomPainter {
   final List<Map<String, dynamic>> detectionResult;
+  final BuildContext context; // Add BuildContext as a member variable
 
-  BoundingBoxPainter(this.detectionResult);
+  BoundingBoxPainter(this.detectionResult, this.context);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -12,17 +15,25 @@ class BoundingBoxPainter extends CustomPainter {
     }
 
     List<double> box = detectionResult[0]['box'].cast<double>();
+    // double x1 = box[0] - 60;
+    // double y1 = box[1] - 310;
+    // double x2 = box[2] - 310;
+    // double y2 = box[3] - 500;
     double x1 = box[0];
     double y1 = box[1];
-    double x2 = box[2];
-    double y2 = box[3];
+    double x2 = box[2] - box[0];
+    double y2 = box[3] - box[1];
+    print("stop x1: ${x1.toString()}");
+    print("stop y1: ${y1.toString()}");
+    print("stop x2: ${x2.toString()}");
+    print("stop y2: ${y2.toString()}");
 
     Paint paint = Paint()
       ..color = Colors.red // Color of the bounding box
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
-    canvas.drawRect(Rect.fromLTRB(x1, y1, x2, y2), paint);
+    canvas.drawRect(Rect.fromLTWH(x1, y1, x2, y2), paint);
   }
 
   @override
@@ -40,7 +51,7 @@ class DetectedObjectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CustomPaint(
-        painter: BoundingBoxPainter(detectionResult),
+        painter: BoundingBoxPainter(detectionResult, context),
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
