@@ -78,8 +78,6 @@ flutter:
     # - assets/model/bestmodel.tflite
     # - assets/model/best2_float16.tflite
     # - assets/model/yolov8n_float32.tflite
-    # - assets/model/yolov8l_float32.tflite
-    # - assets/model/yolov8l_float16.tflite
     # - assets/model/my_yv8s.tflite
     # - assets/model/my_best_yv8s.tflite
     - assets/model/my_7yv8s.tflite
