@@ -10,6 +10,16 @@ class CameraView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Camera View"),
+        backgroundColor: Colors.blue,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.back(); // Navigate back when the back button is pressed
+          },
+        ),
+      ),
       body: GetBuilder<ScanController>(
         init: ScanController(),
         builder: (controller) {

@@ -42,6 +42,8 @@ dependencies:
   # flutter_tflite: 
   flutter_vision:
   flutter_tts: ^3.0.0
+  vibration: ^1.8.4
+  speech_to_text:
 
 
 dev_dependencies:

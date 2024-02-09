@@ -3,6 +3,7 @@ import 'package:flutter_vision/flutter_vision.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:vibration/vibration.dart';
 
 class ScanController extends GetxController {
   @override
@@ -39,6 +40,9 @@ class ScanController extends GetxController {
     }
   ];
   var cameraCount = 0;
+
+  var x, y, w, h = 0.0;
+  var label = "";
 
   var isCameraInitialized = false.obs;
 
@@ -100,6 +104,7 @@ class ScanController extends GetxController {
       classThreshold: 0.5,
     );
     if (result.isNotEmpty) {
+      var box = detectionResult[0]['box'];
       print("RESULTTTTTTTTTTTTTTTT:");
       print(result);
 
@@ -109,6 +114,15 @@ class ScanController extends GetxController {
       // [{box: [0.0, 763.1640625, 357.9225158691406, 1116.581787109375, 0.5627957582473755], tag: Stop}]
 
       speak(detectionResult[0]['tag']);
+      Vibration.vibrate();
+
+      label = detectionResult[0]['tag'];
+      x = box[0];
+      y = box[1];
+      w = box[2] - x;
+      h = box[3] - y;
+      update();
     }
+    update();
   }
 }

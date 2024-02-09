@@ -14,19 +14,18 @@ class BoundingBoxPainter extends CustomPainter {
       return; // No detection result or null result, do nothing
     }
 
+    double factorX = size.width / (1280);
+    double factorY = size.height / (720);
+
     List<double> box = detectionResult[0]['box'].cast<double>();
     // double x1 = box[0] - 60;
     // double y1 = box[1] - 310;
     // double x2 = box[2] - 310;
     // double y2 = box[3] - 500;
-    double x1 = box[0];
-    double y1 = box[1];
-    double x2 = box[2] - box[0];
-    double y2 = box[3] - box[1];
-    print("stop x1: ${x1.toString()}");
-    print("stop y1: ${y1.toString()}");
-    print("stop x2: ${x2.toString()}");
-    print("stop y2: ${y2.toString()}");
+    double x1 = box[0] * factorX;
+    double y1 = box[1] * factorY;
+    double x2 = (box[2] - x1) * factorX;
+    double y2 = (box[3] - y1) * factorY;
 
     Paint paint = Paint()
       ..color = Colors.red // Color of the bounding box
